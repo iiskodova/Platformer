@@ -41,7 +41,7 @@ def main(window):
         Block(block_size * 11, HEIGHT - block_size * 2, block_size),
         Block(block_size * 17, HEIGHT - block_size * 3, block_size),
         Block(block_size * 16, HEIGHT - block_size * 3, block_size)
-        ]
+    ]
 
     for x in range(12, 17):
         objects.append(Block(block_size * x, HEIGHT - block_size * 5, block_size))
