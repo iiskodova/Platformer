@@ -1,8 +1,8 @@
-from trap import Fire
-from character import Player
-from pyramids import Background
-from stone import Block
-from move_manager import HandleMovement
+from Fire import Fire
+from Player import Player
+from Background import Background
+from Block import Block
+from HandleMovement import HandleMovement
 import pygame
 pygame.init()
 
@@ -31,53 +31,53 @@ def main(window):
     objects = [
         *floor, 
         Block(0, HEIGHT - block_size * 2, block_size), 
-        Block(-block_size, HEIGHT - block_size * 2, block_size),
-        Block(-block_size, HEIGHT - block_size * 3, block_size),
-        Block(-block_size, HEIGHT - block_size * 4, block_size),
-        Block(-block_size, HEIGHT - block_size * 5, block_size),
-        Block(-block_size, HEIGHT - block_size * 6, block_size),
-        Block(-block_size, HEIGHT - block_size * 7, block_size),
-        Block(-block_size, HEIGHT - block_size * 8, block_size),
-        Block(-block_size, HEIGHT - block_size * 9, block_size),
+        Block(0, HEIGHT - block_size * 7, block_size),
         Block(block_size * 3, HEIGHT - block_size * 4, block_size),
         Block(block_size * 4, HEIGHT - block_size * 5, block_size), 
         Block(block_size * 5, HEIGHT - block_size * 5, block_size),
-        Block(block_size * 7, HEIGHT - block_size * 5, block_size),
-        Block(block_size * 7, HEIGHT - block_size * 4, block_size),
         Block(block_size * 5, HEIGHT - block_size * 3, block_size),
         Block(block_size * 6, HEIGHT - block_size * 3, block_size),
-        Block(block_size * 7, HEIGHT - block_size * 7, block_size),
-        Block(block_size * 7, HEIGHT - block_size * 8, block_size),
-        Block(block_size * 7, HEIGHT - block_size * 9, block_size),
         Block(block_size * 8, HEIGHT - block_size * 3, block_size),
-        Block(block_size * 10, HEIGHT - block_size * 4, block_size),
-        Block(block_size * 10, HEIGHT - block_size * 3, block_size),
-        Block(block_size * 10, HEIGHT - block_size * 2, block_size),
         Block(block_size * 11, HEIGHT - block_size * 2, block_size),
-        Block(block_size * 12, HEIGHT - block_size * 5, block_size),
-        Block(block_size * 13, HEIGHT - block_size * 5, block_size),
-        Block(block_size * 14, HEIGHT - block_size * 5, block_size),
-        Block(block_size * 15, HEIGHT - block_size * 5, block_size),
-        Block(block_size * 16, HEIGHT - block_size * 5, block_size),
-        Block(block_size * 18, HEIGHT - block_size * 8, block_size),
-        Block(block_size * 18, HEIGHT - block_size * 7, block_size),
-        Block(block_size * 18, HEIGHT - block_size * 6, block_size),
-        Block(block_size * 18, HEIGHT - block_size * 5, block_size),
-        Block(block_size * 18, HEIGHT - block_size * 4, block_size),
         Block(block_size * 17, HEIGHT - block_size * 3, block_size),
-        Block(block_size * 16, HEIGHT - block_size * 3, block_size),
-        Fire(180, HEIGHT - block_size - 64, 16, 32),
-        Fire(220, HEIGHT - block_size - 64, 16, 32),
-        Fire(260, HEIGHT - block_size - 64, 16, 32),
-        Fire(300, HEIGHT - block_size - 64, 16, 32),
-        Fire(340, HEIGHT - block_size - 64, 16, 32),
-        Fire(730, 258, 16, 32),
-        Fire(680, 258, 16, 32),
-        Fire(1566, 258, 16, 32),
+        Block(block_size * 16, HEIGHT - block_size * 3, block_size)
         ]
 
-    # fire = Fire
-    # fire.loop()
+    for x in range(12, 17):
+        objects.append(Block(block_size * x, HEIGHT - block_size * 5, block_size))
+    
+    for y in range(2, 10):
+        objects.append(Block(-block_size, HEIGHT - block_size * y, block_size))
+    
+    for y in range(4, 9):
+        objects.append(Block(block_size * 18, HEIGHT - block_size * y, block_size))
+    
+    for y in range(4, 6):
+        objects.append(Block(block_size * 7, HEIGHT - block_size * y, block_size))
+
+    for y in range(7, 10):
+        objects.append(Block(block_size * 7, HEIGHT - block_size * y, block_size))
+    
+    for y in range(2, 5):
+        objects.append(Block(block_size * 10, HEIGHT - block_size * y, block_size))
+
+    fires_coords = [
+        (180, HEIGHT - block_size - 64),
+        (220, HEIGHT - block_size - 64),
+        (260, HEIGHT - block_size - 64),
+        (300, HEIGHT - block_size - 64),
+        (340, HEIGHT - block_size - 64),
+        (730, 258),
+        (680, 258),
+        (1566, 258),
+    ]
+
+    fires = []
+    for x, y in fires_coords:
+        fires.append(Fire(x, y, 16, 32))
+
+    objects += fires
+
 
     offset_x = 0
     scroll_area_width = 200
@@ -88,6 +88,9 @@ def main(window):
         clock.tick(FPS) 
         # set the FPS so the game runs at the same speed on every device
 
+        for fire in objects[-8:]:
+            fire.loop()
+        
         for event in pygame.event.get():       
             if event.type == pygame.QUIT:
                 run = False
@@ -98,7 +101,7 @@ def main(window):
                     player.jump()
 
         player.loop(FPS)
-        #Fire.loop()
+
         HandleMovement.handle_move(player, objects)
         Background.draw(window, background, bg_image, player, objects, offset_x)
 
